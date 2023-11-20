@@ -9,12 +9,12 @@ jobs:
       - run: "go build"
       - run: "go run gotest.tools/gotestsum@latest"
       - persist_to_workspace:
-        root: .
-        paths:
-          - challenge
+          root: .
+          paths:
+            - challenge
       - store_artifacts:
-        path: challenge
-        destination: binary
+          path: challenge
+          destination: binary
   deploy:
     docker:
       - image: cimg/go:1.21.4
