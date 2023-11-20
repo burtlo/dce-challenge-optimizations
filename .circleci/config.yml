@@ -1,0 +1,36 @@
+version: 2.1
+
+jobs:
+  build_and_test:
+    docker:
+      - image: cimg/go:1.21.4
+    steps:
+      - checkout
+      - run: "go build"
+      - run: "go run gotest.tools/gotestsum@latest"
+      - persist_to_workspace:
+        root: .
+        paths:
+          - challenge
+      - store_artifacts:
+        path: challenge
+        destination: binary
+  deploy:
+    docker:
+      - image: cimg/go:1.21.4
+    steps:
+      - attach_workspace:
+          at: .
+      - run: echo "Add the appropriate deployment step"
+
+workflows:
+  dce_challenge:
+    jobs:
+      - build_and_test
+      - deploy
+          requires:
+            - build_and_test
+          filters:
+            branches:
+              only:
+                - main
